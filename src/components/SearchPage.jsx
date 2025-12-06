@@ -21,19 +21,36 @@ export default function SearchPage(){
   };
 
   return(
-    <div className="p-6">
+    <div className="p-6 max-w-screen-xl mx-auto w-full">
       <SearchBar onSearch={handleSearch} />
-      <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {movies.map((movie) => (
-          <div key={movie.imdbID} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <img src={movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/300x450?text=No+Image"} alt={movie.Title} className="w-full h-40 object-cover rounded-xl mb-4"/>
-            <div className="p-4">
-              <h2 className="text-lg font-semibold mb-2">{movie.Title}</h2>
-              <p className="text-gray-600">Year: {movie.Year}</p>
-            </div>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+          {movies.length > 0 ? (
+          movies.map((movie) => (
+       <div
+         key={movie.imdbID}
+         className="bg-white p-4 rounded-xl shadow hover:shadow-md transition"
+       >
+       <img
+         src={
+            movie.Poster !== "N/A"
+              ? movie.Poster
+              : "https://via.placeholder.com/300x450?text=No+Image"
+          }
+          alt={movie.Title}
+          className="w-full h-80 object-cover rounded-lg mb-3"
+       />
+
+       <h2 className="text-lg font-semibold mb-1 text-blue-700">{movie.Title}</h2>
+       <p className="text-gray-600">{movie.Year}</p>
       </div>
-    </div>
+     ))
+     ) : (
+     <p className="text-center text-gray-500 col-span-full">
+        No movies yet. Try searching!
+     </p>
+    )}
+   </div>
+
+  </div>  
   );
 }
