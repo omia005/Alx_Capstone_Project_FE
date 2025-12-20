@@ -1,27 +1,16 @@
-🎬 Movie Search App
+# React + Vite
 
-A sleek, fast, and responsive Movie Search Application built using React (Vite) and TailwindCSS.
-Users can search for movies by title, fetch real movie data from an external API, and view results beautifully displayed in a clean, modern grid layout.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-🚀 Features
+Currently, two official plugins are available:
 
-🔍 Search movies by title
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-⚡ Instant results fetched from an external movie API (OMDb API)
+## React Compiler
 
-🎨 Fully styled using TailwindCSS
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-🖼️ Responsive movie card grid layout
+## Expanding the ESLint configuration
 
-📱 Perfect on mobile, tablet, and desktop
-
-❌ Graceful fallback when a movie has no poster
-
-🧩 Modular components (SearchBar, MovieGrid, MovieCard)
-
-🛠️ Tech Stack
-Tool	Purpose
-React + Vite - Fast frontend framework setup
-TailwindCSS - 	Utility-first modern styling
-OMDb API	Retrieves - movie data
-JavaScript (ES6)	- Component logic
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
