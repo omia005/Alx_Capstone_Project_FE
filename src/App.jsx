@@ -3,7 +3,7 @@ import MovieDetail from './components/MovieDetail.jsx'
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import LoginPage from './components/LoginPage.jsx';
 import SignupPage from './components/SignupPage.jsx';
-import Navbar from './components/Navbar.jsx';
+import Navbar from './components/navbar.jsx';
 
 
 function App(){
