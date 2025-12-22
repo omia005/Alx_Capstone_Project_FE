@@ -1,9 +1,18 @@
 import { useState, useEffect} from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./navbar.jsx";
 
 export default function MovieSearchPage() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+   useEffect(() => {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (!loggedInUser) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   const [movies, setMovies] = useState(() => {
     return (

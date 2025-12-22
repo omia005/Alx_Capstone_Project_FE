@@ -1,15 +1,16 @@
 import MovieSearchPage from './components/SearchPage'
 import MovieDetail from './components/MovieDetail.jsx'
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import LoginPage from "./LoginPage";
-import SignupPage from "./SignupPage";
-import Navbar from "./Navbar";
+import LoginPage from './components/LoginPage.jsx';
+import SignupPage from './components/SignupPage.jsx';
+import Navbar from './components/Navbar.jsx';
 
 
 function App(){
   return(
     <BrowserRouter>
       <Routes>
+        <Route path="/navbar" element={<Navbar/>}/>
         <Route path='/' element={<MovieSearchPage/>}/>
         <Route path="/movie/:imdbID" element={<MovieDetail/>} />
         <Route path="/login" element={<LoginPage />} />
