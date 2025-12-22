@@ -1,6 +1,6 @@
 import { useState, useEffect} from "react";
-import SearchBar from "./SearchBar";
 import { Link, useLocation } from "react-router-dom";
+import Navbar from "./navbar.jsx";
 
 export default function MovieSearchPage() {
   const location = useLocation();
@@ -44,8 +44,9 @@ export default function MovieSearchPage() {
 
   return (
     <div className="p-6 max-w-screen-xl mx-auto w-full">
-      {/* ✅ pass preserved query */}
-      <SearchBar onSearch={handleSearch} initialQuery={query} />
+      <>
+       <Navbar onSearch={handleSearch} initialQuery={query} />
+      </>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
         {movies.length > 0 ? (

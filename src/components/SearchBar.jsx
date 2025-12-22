@@ -16,7 +16,7 @@ export default function SearchBar({ onSearch, initialQuery = "" }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center gap-3 w-full max-w-xl mx-auto mb-6"
+      className="flex items-center gap-3 w-full max-w-xl mx-auto "
     >
       <input
         type="text"
@@ -28,7 +28,7 @@ export default function SearchBar({ onSearch, initialQuery = "" }) {
 
       <button
         type="submit"
-        className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium shadow-sm transition"
+        className="px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium shadow-sm transition"
       >
         Search
       </button>

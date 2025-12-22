@@ -1,68 +1,31 @@
-import {useState} from 'react';
-import SearchBar  from './SearchBar';
-import {Link, useLocation} from 'react-router-dom';
+// Navbar.jsx
+import { Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
-export default function MovieSearchPage(){
-  const location = useLocation();
-  const [movies, setMovies] = useState(
-    location.state?.movies || []
-  );
-
-  const [query, setQuery] = useState(
-    location.state?.query || ""
-  );
-
-  const handleSearch = async (searchQuery) => {
-    if (!searchQuery) return;
-     
-    try{
-      const response =await fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=6c8e299c&s=${encodeURIComponent (searchQuery)}`);
-      const data = await response.json();
-
-      setMovies(data.Search ||[]);
-      setQuery(searchQuery);
-    }
-    catch (error){
-      console.error("Error fetching movies:", error);
-      setMovies([]);
-    }
-  };
-
-  return(
-    <div className="p-6 max-w-screen-xl mx-auto w-full">
-      <SearchBar onSearch={handleSearch} initialQuery={query}/>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-          {movies.length > 0 ? (
-          movies.map((movie) => (
-          <Link
-            key={movie.imdbID}
-            to={`/movie/${movie.imdbID}`}
-            state={{ movies, query }} // we are sending both movie and query as state
-            className="bg-white p-4 rounded-xl shadow hover:shadow-md transition block"
-          >
-           <img
-             src={
-             movie.Poster !== "N/A"
-              ? movie.Poster
-              : "https://via.placeholder.com/300x450?text=No+Image"
-            }
-            alt={movie.Title}
-            className="w-full h-80 object-cover rounded-lg mb-3"
-           />
-
-           <h2 className="text-lg font-semibold mb-1 text-blue-700 text-center">{movie.Title}</h2>
-           <p className="text-gray-600 text-center">{movie.Year}</p>
-           <p className="text-sm text-gray-600 mt-2 text-center">{movie.Type}</p>
-        
+export default function Navbar({ onSearch, initialQuery }) {
+  return (
+    <nav className="bg-blue-700 text-white p-4 shadow-md sticky top-0 z-50 w-full rounded-xl mb-6">
+      <div className="max-w-screen-xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="flex justify-between items-center w-full sm:w-auto">
+          <Link to="/" className="text-2xl font-bold">
+            MovieHub
           </Link>
-    
-       ))
-       ) : (
-       <p className="text-center text-gray-500 col-span-full">
-          No movies yet. Try searching!
-       </p>
-     )}
+
+          <div className="hidden sm:flex space-x-4 ml-10">
+            <Link to="/" className="hover:underline">
+              Home
+            </Link>
+            <Link to="/about" className="hover:underline">
+              About
+            </Link>
+          </div>
+        </div>
+
+        {/* Add search bar inside navbar */}
+        <div className="w-full sm:w-1/2 mt-4 sm:mt-0">
+          <SearchBar onSearch={onSearch} initialQuery={initialQuery} />
+        </div>
       </div>
-    </div>  
+    </nav>
   );
 }
