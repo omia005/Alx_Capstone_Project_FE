@@ -24,7 +24,15 @@ export default function Navbar({ onSearch, initialQuery }) {
     setUser(null);
     navigate("/login");
   };
+   
 
+  const handleFavourites= () => {
+    navigate("/favorites");
+  }
+
+  const handleWatchlist= () => {
+    navigate("/watchlist");
+  }
 
   return (
     <nav className="bg-blue-700 text-white p-4 shadow-md sticky top-0 z-50 w-full rounded-xl mb-6">
@@ -48,6 +56,15 @@ export default function Navbar({ onSearch, initialQuery }) {
               
                 {user ? (
                  <>
+                  <button
+                   onClick={handleFavourites}
+                   className="bg-white text-blue-700 px-4 py-2 rounded hover:bg-gray-100 transition mr-2"
+                  >Favorites</button> 
+
+                  <button
+                   onClick={handleWatchlist}
+                   className="bg-white text-blue-700 px-4 py-2 rounded hover:bg-gray-100 transition mr-2"
+                  >Watchlist</button>
                   
                   <button
                    onClick={handleLogout}

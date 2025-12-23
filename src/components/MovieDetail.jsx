@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getUserData, saveUserData } from "../utils/userStorage";
+import { getUserData, saveUserData, getUserKey, getStoredList, saveStoredList } from "../utils/userStorage";
 
 export default function MovieDetail() {
   const { imdbID } = useParams();
@@ -10,7 +10,7 @@ export default function MovieDetail() {
   const [reviewText, setReviewText] = useState("");
   const [reviews, setReviews] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [inWatchlist, setInWatchlist] = useState(false);
+  const [inWatchlist, setIsWatchlisted] = useState(false);
 
   useEffect(() => {
     fetch(
@@ -26,29 +26,57 @@ export default function MovieDetail() {
     const userData = getUserData(user);
     setReviews(userData.reviews[imdbID] || []);
     setIsFavorite(userData.favorites.includes(imdbID));
-    setInWatchlist(userData.watchlist.includes(imdbID));
+    setIsWatchlisted(userData.watchlist.includes(imdbID));
   }, [user, imdbID]);
 
-  const toggleFavorite = () => {
-    const userData = getUserData(user);
-    userData.favorites = isFavorite
-      ? userData.favorites.filter(id => id !== imdbID)
-      : [...userData.favorites, imdbID];
+ // Check stored lists
+  useEffect(() => {
+    if (!user || !movie) return;
 
-    saveUserData(user, userData);
+    const favKey = getUserKey("favorites", user);
+    const watchKey = getUserKey("watchlist", user);
+
+    setIsFavorite(
+      getStoredList(favKey).some((m) => m.imdbID === imdbID)
+    );
+
+    setIsWatchlisted(
+      getStoredList(watchKey).some((m) => m.imdbID === imdbID)
+    );
+  }, [imdbID, user, movie]);
+
+  const toggleFavorite = () => {
+    if (!user || !movie) return;
+
+    const key = getUserKey("favorites", user);
+    let list = getStoredList(key);
+
+    list = isFavorite
+      ? list.filter((m) => m.imdbID !== imdbID)
+      : [...list, movie];
+
+    saveStoredList(key, list);
     setIsFavorite(!isFavorite);
   };
-
+  
   const toggleWatchlist = () => {
-    const userData = getUserData(user);
-    userData.watchlist = inWatchlist
-      ? userData.watchlist.filter(id => id !== imdbID)
-      : [...userData.watchlist, imdbID];
+    if (!user || !movie) return;
 
-    saveUserData(user, userData);
-    setInWatchlist(!inWatchlist);
+    const key = getUserKey("watchlist", user);
+    let list = getStoredList(key);
+
+    list = inWatchlist
+      ? list.filter((m) => m.imdbID !== imdbID)
+      : [...list, movie];
+      
+    saveStoredList(key, list);
+    setIsWatchlisted(!inWatchlist);
   };
+  
 
+  if (!movie) {
+    return <p className="text-center mt-10">Loading...</p>;
+  }
   const submitReview = () => {
     if (!reviewText.trim()) return;
 
@@ -83,6 +111,7 @@ export default function MovieDetail() {
           <h1 className="text-3xl font-bold mb-2">{movie.Title}</h1>
           <p className="text-gray-500 mb-4">{movie.Year} • {movie.Genre} • {movie.Runtime}</p>
           <p className="mb-4"><strong>Director:</strong> {movie.Director}</p>
+          <p className="mb-4"><strong>Language:</strong> {movie.Language}</p>
           <p className="mb-4"><strong>Actors:</strong> {movie.Actors}</p>
           <p className="text-gray-600 mb-2">{movie.Plot}</p>
           <p className="text-sm">⭐ {movie.imdbRating}</p>

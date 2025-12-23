@@ -5,6 +5,8 @@ import LoginPage from './components/LoginPage.jsx';
 import SignupPage from './components/SignupPage.jsx';
 import Navbar from './components/navbar.jsx';
 import ProtectedRoute from './components/protectedRoute.jsx';
+import FavoritesPage from './components/Favourites.jsx';
+import WatchlistPage from './components/Watchlist.jsx';
 
 
 function App(){
@@ -22,6 +24,9 @@ function App(){
         <Route path="/movie/:imdbID" element={<MovieDetail/>} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="/watchlist" element={<WatchlistPage />} />
+
       </Routes>
     </BrowserRouter>
   )
