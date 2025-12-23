@@ -49,8 +49,10 @@ export default function MovieDetails() {
           <p><strong>Genre:</strong> {movie.Genre}</p>
           <p><strong>Director:</strong> {movie.Director}</p>
           <p><strong>IMDB Rating:</strong> {movie.imdbRating}</p>
+          <p><strong>Premiered on:</strong> {movie.Released}</p>
           <p><strong>Language:</strong> {movie.Language}</p>
-          <p><strong>Actors:</strong> {movie.Actors}</p>
+          <p><strong>Cast:</strong> {movie.Actors}</p>
+          
         </div>
       </div>
     </div>

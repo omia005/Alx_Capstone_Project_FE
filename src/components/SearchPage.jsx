@@ -12,7 +12,7 @@ export default function MovieSearchPage() {
     if (!loggedInUser) {
       navigate("/login");
     }
-  }, [navigate]);
+  }, [navigate]); // redirect if not logged in
 
   const [movies, setMovies] = useState(() => {
     return (
@@ -63,7 +63,7 @@ export default function MovieSearchPage() {
             <Link
               key={movie.imdbID}
               to={`/movie/${movie.imdbID}`}
-              state={{ movies, query }} // ✅ preserve state
+              state={{ movies, query }} //  preserve state
               className="bg-white p-4 rounded-xl shadow hover:shadow-md transition block"
             >
               <img
