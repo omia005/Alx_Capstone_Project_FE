@@ -68,7 +68,6 @@ export default function MovieDetail() {
     list = inWatchlist
       ? list.filter((m) => m.imdbID !== imdbID)
       : [...list, movie];
-      
     saveStoredList(key, list);
     setIsWatchlisted(!inWatchlist);
   };
@@ -100,7 +99,7 @@ export default function MovieDetail() {
   return (
     <div className="max-w-screen-lg mx-auto p-6">
       {/* Movie details */}
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col md:flex-row gap-6 bg-white p-6 rounded-lg shadow-md">
         <img
           src={movie.Poster}
           alt={movie.Title}
@@ -135,7 +134,7 @@ export default function MovieDetail() {
       </div>
 
       {/* ✅ Reviews section BELOW movie details */}
-      <div className="mt-10">
+      <div className="mt-10 bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-4">User Reviews</h2>
 
         {reviews.length === 0 && (

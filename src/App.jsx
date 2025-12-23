@@ -9,27 +9,62 @@ import FavoritesPage from './components/Favourites.jsx';
 import WatchlistPage from './components/Watchlist.jsx';
 
 
-function App(){
-  return(
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={
-            <ProtectedRoute>
-              <MovieSearchPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/navbar" element={<Navbar/>}/>
-        <Route path='/' element={<MovieSearchPage/>}/>
-        <Route path="/movie/:imdbID" element={<MovieDetail/>} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/favorites" element={<FavoritesPage />} />
-        <Route path="/watchlist" element={<WatchlistPage />} />
 
-      </Routes>
-    </BrowserRouter>
-  )
+
+function App() {
+  return (
+    <>
+      {/* Fixed background */}
+      <div
+        className="
+          fixed
+          inset-0
+          bg-[url('/movie-background.jpg')]
+          bg-cover
+          bg-center
+          -z-10
+        "
+      />
+
+      
+
+      {/* Scrollable content */}
+      <div className="min-h-screen">
+        <BrowserRouter>
+              <Routes>
+                <Route path="/" element={
+                    <ProtectedRoute>
+                      <MovieSearchPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/navbar" element={<Navbar/>}/>
+                <Route path='/' element={<MovieSearchPage/>}/>
+                <Route path="/movie/:imdbID" element={
+                  <ProtectedRoute>
+                    <MovieDetail />
+                  </ProtectedRoute>
+                  } />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/favorites" element={
+                  <ProtectedRoute>
+                     <FavoritesPage />
+                  </ProtectedRoute>
+                }/>
+        
+                <Route path="/watchlist" element={
+                  <ProtectedRoute>
+                    <WatchlistPage />
+                  </ProtectedRoute>
+                } />
+        
+               </Routes>
+            </BrowserRouter>
+      </div>
+    </>
+  );
 }
+
 
 export default App

@@ -64,7 +64,7 @@ export default function MovieSearchPage() {
               key={movie.imdbID}
               to={`/movie/${movie.imdbID}`}
               state={{ movies, query }} //  preserve state
-              className="bg-white p-4 rounded-xl shadow hover:shadow-md transition block"
+              className="bg-gray-300 p-4 rounded-xl shadow hover:shadow-md transition block"
             >
               <img
                 src={

@@ -7,8 +7,8 @@ export default function WatchlistPage() {
 
   if (watchlist.length === 0) {
     return (
-      <p className="text-center text-gray-500 mt-20">
-        Your watchlist is empty 🎬
+      <p className="text-center text-3xl text-white mt-20">
+        <strong>Your watchlist is empty 🎬</strong>
       </p>
     );
   }

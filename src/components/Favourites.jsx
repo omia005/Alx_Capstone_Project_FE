@@ -7,8 +7,8 @@ export default function FavouritePage() {
 
   if (favorites.length === 0) {
     return (
-      <p className="text-center text-gray-500 mt-20">
-        Your Favorites list is empty 🎬
+      <p className="text-center text-3xl text-white mt-20">
+        <strong>Your Favorites list is empty 🎬</strong>
       </p>
     );
   }

@@ -42,7 +42,7 @@ export default function Navbar({ onSearch, initialQuery }) {
         
               {/* Logo */}
               <Link to="/" className="text-2xl font-bold">
-                MovieApp
+                MovieHub
               </Link>
 
               {/* Search bar (only show when logged in) */}
