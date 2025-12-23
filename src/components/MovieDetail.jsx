@@ -1,59 +1,144 @@
-import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getUserData, saveUserData } from "../utils/userStorage";
 
-export default function MovieDetails() {
-  const [movie, setMovie] = useState();
-  const { imdbID } = useParams(); // fetches the imdbID from the URL
-  const navigate = useNavigate(); // to navigate back
-  const location = useLocation();
+export default function MovieDetail() {
+  const { imdbID } = useParams();
+  const user = localStorage.getItem("loggedInUser");
 
+  const [movie, setMovie] = useState(null);
+  const [reviewText, setReviewText] = useState("");
+  const [reviews, setReviews] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [inWatchlist, setInWatchlist] = useState(false);
 
   useEffect(() => {
-    const fetchMovie = async () => {
-      const res = await fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=6c8e299c`);
-      const data = await res.json();
-      setMovie(data);
-    };
-
-    fetchMovie();
+    fetch(
+      `https://www.omdbapi.com/?apikey=6c8e299c&i=${imdbID}&plot=full`
+    )
+      .then(res => res.json())
+      .then(data => setMovie(data));
   }, [imdbID]);
 
-  if (!movie) {
-    return <p className="text-center mt-10">Loading...</p>;
-  }
+  useEffect(() => {
+    if (!user) return;
+
+    const userData = getUserData(user);
+    setReviews(userData.reviews[imdbID] || []);
+    setIsFavorite(userData.favorites.includes(imdbID));
+    setInWatchlist(userData.watchlist.includes(imdbID));
+  }, [user, imdbID]);
+
+  const toggleFavorite = () => {
+    const userData = getUserData(user);
+    userData.favorites = isFavorite
+      ? userData.favorites.filter(id => id !== imdbID)
+      : [...userData.favorites, imdbID];
+
+    saveUserData(user, userData);
+    setIsFavorite(!isFavorite);
+  };
+
+  const toggleWatchlist = () => {
+    const userData = getUserData(user);
+    userData.watchlist = inWatchlist
+      ? userData.watchlist.filter(id => id !== imdbID)
+      : [...userData.watchlist, imdbID];
+
+    saveUserData(user, userData);
+    setInWatchlist(!inWatchlist);
+  };
+
+  const submitReview = () => {
+    if (!reviewText.trim()) return;
+
+    const userData = getUserData(user);
+    const movieReviews = userData.reviews[imdbID] || [];
+
+    const newReview = {
+      text: reviewText,
+      date: new Date().toLocaleDateString()
+    };
+
+    userData.reviews[imdbID] = [...movieReviews, newReview];
+    saveUserData(user, userData);
+
+    setReviews(userData.reviews[imdbID]);
+    setReviewText("");
+  };
+
+  if (!movie) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <button
-        onClick={() => navigate(-1)}
-        className="mb-6 text-blue-600 hover:underline font-medium"
-      >
-        ← Back to search
-      </button>
+    <div className="max-w-screen-lg mx-auto p-6">
+      {/* Movie details */}
       <div className="flex flex-col md:flex-row gap-6">
         <img
-          src={
-            movie.Poster !== "N/A"
-              ? movie.Poster
-              : "https://via.placeholder.com/300x450"
-          }
+          src={movie.Poster}
           alt={movie.Title}
-          className="w-full md:w-72 rounded-xl"
+          className="w-64 rounded-lg"
         />
 
         <div>
           <h1 className="text-3xl font-bold mb-2">{movie.Title}</h1>
-          <p className="text-gray-600 mb-2">{movie.Year}</p>
-          <p className="mb-4">{movie.Plot}</p>
+          <p className="text-gray-500 mb-4">{movie.Year} • {movie.Genre} • {movie.Runtime}</p>
+          <p className="mb-4"><strong>Director:</strong> {movie.Director}</p>
+          <p className="mb-4"><strong>Actors:</strong> {movie.Actors}</p>
+          <p className="text-gray-600 mb-2">{movie.Plot}</p>
+          <p className="text-sm">⭐ {movie.imdbRating}</p>
 
-          <p><strong>Genre:</strong> {movie.Genre}</p>
-          <p><strong>Director:</strong> {movie.Director}</p>
-          <p><strong>IMDB Rating:</strong> {movie.imdbRating}</p>
-          <p><strong>Premiered on:</strong> {movie.Released}</p>
-          <p><strong>Language:</strong> {movie.Language}</p>
-          <p><strong>Cast:</strong> {movie.Actors}</p>
-          
+          <div className="flex gap-4 mt-4">
+            <button
+              onClick={toggleFavorite}
+              className="bg-yellow-500 px-4 py-2 rounded"
+            >
+              {isFavorite ? "Remove Favorite" : "Add to Favorites"}
+            </button>
+
+            <button
+              onClick={toggleWatchlist}
+              className="bg-green-600 px-4 py-2 rounded text-white"
+            >
+              {inWatchlist ? "Remove Watchlist" : "Add to Watchlist"}
+            </button>
+          </div>
         </div>
+      </div>
+
+      {/* ✅ Reviews section BELOW movie details */}
+      <div className="mt-10">
+        <h2 className="text-2xl font-semibold mb-4">User Reviews</h2>
+
+        {reviews.length === 0 && (
+          <p className="text-gray-500">No reviews yet.</p>
+        )}
+
+        {reviews.map((review, index) => (
+          <div
+            key={index}
+            className="bg-gray-100 p-4 rounded mb-3"
+          >
+            <p>{review.text}</p>
+            <span className="text-sm text-gray-500">
+              {review.date}
+            </span>
+          </div>
+        ))}
+
+        {/* Add review */}
+        <textarea
+          value={reviewText}
+          onChange={(e) => setReviewText(e.target.value)}
+          placeholder="Write your review..."
+          className="w-full border p-3 rounded mt-4"
+        />
+
+        <button
+          onClick={submitReview}
+          className="mt-3 bg-blue-700 text-white px-6 py-2 rounded"
+        >
+          Submit Review
+        </button>
       </div>
     </div>
   );
